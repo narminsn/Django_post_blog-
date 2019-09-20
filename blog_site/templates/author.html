@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <style>
+        .modalimage:hover {
+            opacity: 0.3;
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .site-heading:hover .middle {
+            opacity: 1;
+        }
+
+        .text {
+            background-color: #484f49;
+            color: white;
+            font-size: 16px;
+            padding: 16px 32px;
+        }
+    </style>
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('{{ user.background_image.url }}')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="site-heading">
+                        <img class="modalimage" style="width: 200px; border-radius: 20px;"src="{{ user.profile_image.url }}">
+                        {#                        <button data-toggle="modal" data-target="#myModal">werfgt</button>#}
+                        <div class="middle">
+                            <div data-toggle="modal" data-target="#myModal" class="text"><span
+                                    style="cursor:pointer"><span class="glyphicon glyphicon-camera"></span> Change photo</span><br>
+                            </div>
+                        </div>
+                        <hr>
+                        <h2>{{ user.user.username }}</h2>
+                        <span class="subheading">{{ user.about|default:"" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block page %}
+    <!-- Main Content -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                {% for field in posts %}
+                    <div class="post-preview">
+                        <a href="{% url 'post-view' field.slug %}">
+                            <h2 class="post-title">
+                                {{ field.title }}
+                            </h2>
+                            <h3 class="post-subtitle">
+                                {{ field.subtitle }}
+                            </h3>
+                        </a>
+                        <p class="post-meta">Posted by
+                            <a href="{% url 'post-view'  field.slug%}">{{ field.user.get_full_name }}</a>
+                            on {{ field.publish_date }}</p>
+                    </div>
+                    <hr>
+                {% endfor %}
+                <div class="clearfix">
+                    <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 style="margin-bottom: 0;line-height: 3.5;font-size: 19px;font-weight: 400;"
+                            class="modal-title">Add profile photo</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% for field in profile_form %}
+                                {{ field }}
+                            {% endfor %}
+                            <br>
+                            <button name="photo" type="submit" class="btn btn-success" >Change
+                            </button>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+{% endblock %}
+

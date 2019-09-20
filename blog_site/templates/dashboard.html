@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block page %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+
+
+                <form enctype="multipart/form-data" method="POST" name="loginFrom" id="loginFrom" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="control-group">
+                            <div class="form-group floating-label-form-group controls">
+                                <label>{{ field.label }}</label>
+                                {{ field }}
+                                {#                                                                                <input type="text" class="form-control" placeholder="Başlıq" id="username" required value="Müasir multifaktorlu autentifikasiya texnologiyaları icmalı">#}
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <br>
+                    <div id="success"></div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="sendMessageButton">Yarat</button>
+                        <a style="color: white;" class="btn btn-danger" id="sendMessageButton">Imtina et</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 mx-auto">
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Şəkil</th>
+                            <th>Başlıq</th>
+                            <th>Saytda görünməyi</th>
+                            <th>Paylaşıldığı tarix</th>
+                            <th>Əməliyyatlar</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for post in posts %}
+                            <tr>
+                                <td>1</td>
+                                <td><img style="width: 150px;" src="{{ post.background_image.url }}"></td>
+                                <td>{{ post.title }}</td>
+                                <td>Hə/Yox</td>
+                                <td>{{ post.publish_date }}</td>
+                                <td><a id="{{ post.id }}" class="btn btn-success" href="{% url 'post-edit'  post.id %}">Düzəliş
+                                    et</a>
+                                    <a class="btn btn-danger" data-toggle="modal" data-target="#myModal{{ post.id }}"
+                                       href="">Sil</a></td>
+                            </tr>
+                        {% endfor %}
+
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        {#                <tr>#}
+                        {#                  <td>1</td>#}
+                        {#                  <td><img style="width: 150px;" src="img/post-sample-image.jpg"></td>#}
+                        {#                  <td>Müasir multifaktorlu autentifikasiya texnologiyaları icmalı</td>#}
+                        {#                  <td>Hə/Yox</td>#}
+                        {#                  <td>27/7/2018 23:00</td>#}
+                        {#                  <td><a class="btn btn-success" href="">Düzəliş et</a><a class="btn btn-danger" data-toggle="modal" data-target="#myModal" href="">Sil</a></td>#}
+                        {#                </tr>#}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Pager -->
+            <ul class="pagination justify-content-center">
+                {% if posts.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page in page_range %}
+                    {% if page == posts.number %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                    {% else %}
+                        <li class="page-item "><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% if posts.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+
+    <hr>
+    <!-- Modal -->
+    {% for post in articles %}
+        <div id="myModal{{ post.id }}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <form method="post" action="{{ post.id }}">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 style="margin-bottom: 0;line-height: 3.5;font-size: 19px;font-weight: 400;"
+                                class="modal-title">{{ post.title }}</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                        </div>
+                        <div class="modal-body">
+                            <p>Bu xəbəri silmək istədiyinizə əminsiniz?</p>
+                        </div>
+                        <div class="modal-footer">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="btn btn-success">Sil</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Bağla</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+

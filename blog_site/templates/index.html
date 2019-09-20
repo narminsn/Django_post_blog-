@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+
+
+{% block page %}
+    <!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {% for field in posts %}
+                {% if field.subtitle == None %}
+                    <div class="post-preview">
+                    <a href="{% url 'post-view' field.slug %}">
+                        <h2 class="post-title">
+                            {{ field.title }}
+                        </h2>
+                    </a>
+                    <p class="post-meta">Posted by
+                        <a href="{% url 'author-view' field.user.profilemodel.slug %}">{{ field.user.username }}</a>
+                        on {{ field.publish_date }}</p>
+                </div>
+                <hr>
+
+                {% else %}
+                    <div class="post-preview">
+                    <a href="{% url 'post-view' field.slug %}">
+                        <h2 class="post-title">
+                            {{ field.title }}
+                        </h2>
+                        <h3 class="post-subtitle">
+                            {{ field.subtitle }}
+                        </h3>
+                    </a>
+                    <p class="post-meta">Posted by
+                        <a href="{% url 'author-view' field.user.profilemodel.slug %}">{{ field.user.username }}</a>
+                        on {{ field.publish_date }}</p>
+                </div>
+                <hr>
+                {% endif %}
+
+            {% endfor %}
+             <!-- Pager -->
+            <ul class="pagination justify-content-center">
+                {% if posts.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page in page_range %}
+                    {% if page == posts.number %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                    {% else %}
+                        <li class="page-item "><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% if posts.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<hr>
+{% endblock %}
+
